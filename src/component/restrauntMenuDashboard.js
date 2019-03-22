@@ -8,7 +8,8 @@ import {Link} from 'react-router-dom';
 class RestrauntMenuDashboard extends Component {
 
   state = {
-    menuCart: []
+    menuCart: [],
+    cartTotal: '0.00'
   }
 
   addingItem = (foodItem) => {
@@ -17,6 +18,17 @@ class RestrauntMenuDashboard extends Component {
         menuCart: [...this.state.menuCart, foodItem]
       }, function () {
         console.log(this.state.menuCart);
+        let tempTotal = 0.00;
+        this.state.menuCart.forEach((cartitem) => {
+          let copycartitem = Object.assign(cartitem);
+          let cleanedPrice = copycartitem.price.replace(/\$/,"");
+          tempTotal += parseFloat(cleanedPrice);
+        });
+        tempTotal = String(tempTotal);
+        console.log(tempTotal);
+        this.setState({
+          cartTotal: tempTotal
+        });
       }
     );
   }
@@ -46,7 +58,7 @@ class RestrauntMenuDashboard extends Component {
           <Route exact path="/foodCart" render={props => (
             <div>
                 <h1>Items in your Cart</h1>
-                <FoodCart foodincart={this.state.menuCart}/>
+                <FoodCart foodincart={this.state.menuCart} cartTotal={this.state.cartTotal}/>
             </div>
           )}/>
 

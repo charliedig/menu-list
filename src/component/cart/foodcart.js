@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
+import FoodHolder from './foodholder';
+import CartTotal from './carttotal';
+import CartCheckout from './cartcheckout';
 
 class FoodCart extends Component {
 
-
   render() {
     return (
-        this.props.foodincart.map((food) => (
-            <div>
-                <h3>{food.name}</h3>
-                <h3>{food.price}</h3>
-            </div>
-          ))
-    );
+      <div>
+        <div>
+            <FoodHolder cartItems={this.props.foodincart}/>
+        </div>
+        <div>
+            <CartTotal cartTotal={this.props.cartTotal}/>
+            <CartCheckout/>
+        </div>
+      </div>
+
+      );
   }
 }
 

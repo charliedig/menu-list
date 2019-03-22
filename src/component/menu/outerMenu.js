@@ -25,6 +25,7 @@ class OuterMenu extends Component {
     });
     */
     // Dynamically generate headers and items with out the need for separation 
+
     let distinctFoodCategoryArray = [];
 
     let menuHeaderandItems = this.props.menuitems.map((item) => {
