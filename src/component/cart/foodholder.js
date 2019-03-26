@@ -6,7 +6,7 @@ class FoodHolder extends Component {
   render() {
     return (
         this.props.cartItems.map((cartitem) => (
-            <CartItem cartitem={cartitem}/>
+            <CartItem removeItem={this.props.removeItem} cartitem={cartitem}/>
           ))
       )  
   }

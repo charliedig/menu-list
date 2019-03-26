@@ -4,6 +4,8 @@ import OuterMenu from './menu/outerMenu';
 import FoodCart from './cart/foodcart';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import {Link} from 'react-router-dom';
+import cloneDeep from 'lodash/cloneDeep';
+
 
 class RestrauntMenuDashboard extends Component {
 
@@ -17,20 +19,50 @@ class RestrauntMenuDashboard extends Component {
       {
         menuCart: [...this.state.menuCart, foodItem]
       }, function () {
+        // Generate total 
         console.log(this.state.menuCart);
-        let tempTotal = 0.00;
-        this.state.menuCart.forEach((cartitem) => {
-          let copycartitem = Object.assign(cartitem);
-          let cleanedPrice = copycartitem.price.replace(/\$/,"");
-          tempTotal += parseFloat(cleanedPrice);
-        });
-        tempTotal = String(tempTotal);
+        let tempTotal = this.generateTotal(this.state.menuCart);
         console.log(tempTotal);
         this.setState({
           cartTotal: tempTotal
         });
       }
     );
+  }
+
+  removeItem = (itemName) => {
+    // Create array of new cart 
+    console.log("deleting")
+    let dummycart = cloneDeep(this.state.menuCart);
+
+    for (let i=0; i<dummycart.length; i++) {
+      if (dummycart[i].name === itemName) {
+        dummycart.splice(i, 1);
+        break;
+      }
+    }
+
+    this.setState({
+      menuCart: dummycart
+      }, function () {
+        // Generate total 
+        console.log(this.state.menuCart);
+        let tempTotal = this.generateTotal(this.state.menuCart);
+        console.log(tempTotal);
+        this.setState({
+          cartTotal: tempTotal
+        });
+      });
+  }
+
+  generateTotal = (foodcart) => {
+    let tempTotal = 0.00;
+    foodcart.forEach((cartitem) => {
+      let copycartitem = Object.assign(cartitem);
+      let cleanedPrice = copycartitem.price.replace(/\$/,"");
+      tempTotal += parseFloat(cleanedPrice);
+    });
+    return String(tempTotal);
   }
 
   
@@ -58,7 +90,9 @@ class RestrauntMenuDashboard extends Component {
           <Route exact path="/foodCart" render={props => (
             <div>
                 <h1>Items in your Cart</h1>
-                <FoodCart foodincart={this.state.menuCart} cartTotal={this.state.cartTotal}/>
+                <FoodCart foodincart={this.state.menuCart}
+                 cartTotal={this.state.cartTotal}
+                 removeItem={this.removeItem} />
             </div>
           )}/>
 

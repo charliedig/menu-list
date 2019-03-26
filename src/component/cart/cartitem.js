@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 
 class CartItem extends Component {
 
+removeItem = (itemName) => {
+  this.props.removeItem(itemName);
+}
 
   render() {
     return (
@@ -9,6 +12,7 @@ class CartItem extends Component {
             <h2 style={{marginRight: '20px', flex:'20'}}>{this.props.cartitem.name}</h2>
             <h2 style={{flex:'20'}}>{this.props.cartitem.price}</h2>
             <button style={{float:'right'}}
+            onClick={() => this.removeItem(this.props.cartitem.name)}
             >X</button>
         </div>
     );

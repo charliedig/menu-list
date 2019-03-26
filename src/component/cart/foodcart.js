@@ -9,7 +9,8 @@ class FoodCart extends Component {
     return (
       <div>
         <div>
-            <FoodHolder cartItems={this.props.foodincart}/>
+            <FoodHolder removeItem={this.props.removeItem}
+            cartItems={this.props.foodincart}/>
         </div>
         <div>
             <CartTotal cartTotal={this.props.cartTotal}/>
