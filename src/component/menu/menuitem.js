@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
 class MenuItem extends Component {
+  // adding comment to test
   itemStockStyle = () => {
     return (
       {
-        color: 'blue', 
+        color: 'blue',
         cursor: this.props.foodItem.stocked ? 'pointer' : 'not-allowed',
         flex: '1',
         maxWidth:'40px',
@@ -28,7 +29,7 @@ class MenuItem extends Component {
         onClick={ () => {this.onItemAdd(this.props.foodItem)}}
         >ADD</button>
       </div>
-      
+
     );
   }
 }
