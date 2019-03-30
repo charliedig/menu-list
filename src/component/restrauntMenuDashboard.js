@@ -11,48 +11,83 @@ class RestrauntMenuDashboard extends Component {
 
   state = {
     menuCart: [],
-    cartTotal: '0.00'
+    cartTotal: '0.00',
+    menuitems: [
+      {category: "Appetizers", price: "$49.99", stocked: true, name: "Egg Roll", quantity:2},
+      {category: "Appetizers", price: "$9.99", stocked: true, name: "Crab Ragoon", quantity:2},
+      {category: "Rice and Noodles", price: "$29.99", stocked: true, name: "Fried Rice", quantity:2},
+      {category: "Beef Dishes", price: "$99.99", stocked: true, name: "Wagyu A5 Steak", quantity:2},
+      {category: "Chicken Dishes", price: "$399.99", stocked: true, name: "Fried Chicken", quantity:2},
+      {category: "Chicken Dishes", price: "$399.99", stocked: true, name: "Chicken and Waffles", quantity:2},
+      {category: "Seafood", price: "$199.99", stocked: true, name: "New England Lobster Tail", quantity:2}
+    ]
   }
 
   addingItem = (foodItem) => {
-    this.setState(
-      {
-        menuCart: [...this.state.menuCart, foodItem]
+
+    if (foodItem.stocked) {
+      // dock item quantity
+
+      this.setState({
+        menuItems:[...this.state.menuitems.map((menuItem) => {
+          if (menuItem.name === foodItem.name) {
+            if ((foodItem.quantity) - 1 === 0) {
+              menuItem.stocked = false;
+              menuItem.quantity = 0;
+            } else {
+              menuItem.quantity = foodItem.quantity - 1;
+            }
+            return menuItem;
+          }
+        })]
       }, function () {
-        // Generate total 
-        console.log(this.state.menuCart);
-        let tempTotal = this.generateTotal(this.state.menuCart);
-        console.log(tempTotal);
-        this.setState({
-          cartTotal: tempTotal
-        });
+        debugger;
+        this.setState(
+          {
+            menuCart: [...this.state.menuCart, foodItem]
+          }, function () {
+            // Generate total
+            let tempTotal = this.generateTotal(this.state.menuCart);
+            this.setState({
+              cartTotal: tempTotal
+            });
+          }
+        );
       }
-    );
+    )
+    }
   }
 
-  removeItem = (itemName) => {
-    // Create array of new cart 
-    console.log("deleting")
+  removeItem = (foodItem) => {
     let dummycart = cloneDeep(this.state.menuCart);
 
     for (let i=0; i<dummycart.length; i++) {
-      if (dummycart[i].name === itemName) {
+      if (dummycart[i].name === foodItem.name) {
         dummycart.splice(i, 1);
         break;
       }
     }
 
-    this.setState({
-      menuCart: dummycart
+      this.setState({
+        menuItems:[...this.state.menuitems.map((menuItem) => {
+          if (menuItem.name === foodItem.name) {
+              menuItem.quantity = menuItem.quantity + 1;
+              menuItem.stocked = true;
+          }
+          return menuItem;
+        })]
       }, function () {
-        // Generate total 
-        console.log(this.state.menuCart);
-        let tempTotal = this.generateTotal(this.state.menuCart);
-        console.log(tempTotal);
         this.setState({
-          cartTotal: tempTotal
-        });
-      });
+          menuCart: dummycart
+          }, function () {
+            // Generate total
+            let tempTotal = this.generateTotal(this.state.menuCart);
+            this.setState({
+              cartTotal: tempTotal
+            });
+          });
+      }
+    );
   }
 
   generateTotal = (foodcart) => {
@@ -65,7 +100,7 @@ class RestrauntMenuDashboard extends Component {
     return String(tempTotal);
   }
 
-  
+
   render() {
 
 
@@ -77,13 +112,13 @@ class RestrauntMenuDashboard extends Component {
 
           <span>ShangHai HighTea House</span>
           <div>
-            <Link to="/">HOME</Link> | 
+            <Link to="/">HOME</Link> |
             <Link to="/foodCart">CART</Link>
           </div>
           <Route exact path="/" render={props => (
             <div>
               <SearchBar/>
-              <OuterMenu addingItem={this.addingItem} menuitems={menuitems} />
+              <OuterMenu addingItem={this.addingItem} menuitems={this.state.menuitems} />
             </div>
           )}/>
 
@@ -103,15 +138,5 @@ class RestrauntMenuDashboard extends Component {
     );
   }
 }
-
-const menuitems = [
-  {category: "Appetizers", price: "$49.99", stocked: false, name: "Egg Roll"},
-  {category: "Appetizers", price: "$9.99", stocked: true, name: "Crab Ragoon"},
-  {category: "Rice and Noodles", price: "$29.99", stocked: true, name: "Fried Rice"},
-  {category: "Beef Dishes", price: "$99.99", stocked: true, name: "Wagyu A5 Steak"},
-  {category: "Chicken Dishes", price: "$399.99", stocked: true, name: "Fried Chicken"},
-  {category: "Chicken Dishes", price: "$399.99", stocked: true, name: "Chicken and Waffles"},
-  {category: "Seafood", price: "$199.99", stocked: false, name: "New England Lobster Tail"}
-];
 
 export default RestrauntMenuDashboard;

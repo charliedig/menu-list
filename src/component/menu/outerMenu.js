@@ -24,7 +24,7 @@ class OuterMenu extends Component {
         )
     });
     */
-    // Dynamically generate headers and items with out the need for separation 
+    // Dynamically generate headers and items with out the need for separation
 
     let distinctFoodCategoryArray = [];
 
@@ -46,7 +46,7 @@ class OuterMenu extends Component {
                     <MenuItem addingItem={this.props.addingItem} foodItem={item} />
                 </div>
             )
-        } 
+        }
     });
 
     return (
