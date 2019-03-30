@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class MenuItem extends Component {
-  // adding comment to test
+  // adding comment to testhfdhd
   itemStockStyle = () => {
     return (
       {
